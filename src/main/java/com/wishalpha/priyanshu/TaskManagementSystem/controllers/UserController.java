@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name="Users",description = "This is users api")
 @RestController
 @RequestMapping("/user")
@@ -34,5 +36,11 @@ public class UserController {
     @GetMapping("/details")
     public MyUser userDetail(){
         return userService.userDetails();
+    }
+
+
+    @GetMapping("/all")
+    public List<MyUser> allUsers(){
+        return userService.getAllUsers();
     }
 }
