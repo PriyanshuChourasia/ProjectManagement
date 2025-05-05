@@ -11,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -35,7 +37,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public String authenticateUser(MyUser user){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword()));
-        System.out.println("authentication" + authentication);
         if(authentication.isAuthenticated())
         {
             return jwtService.generateToken(user.getUsername());
@@ -49,4 +50,10 @@ public class UserServiceImpl implements UserService {
     public MyUser userDetails(){
         return null;
     }
+
+    @Override
+    public List<MyUser> getAllUsers(){
+        return userRepository.findAll();
+    }
+
 }
