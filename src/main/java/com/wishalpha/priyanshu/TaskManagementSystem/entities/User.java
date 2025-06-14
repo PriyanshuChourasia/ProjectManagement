@@ -1,42 +1,55 @@
 package com.wishalpha.priyanshu.TaskManagementSystem.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.SourceType;
 
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Entity
-@Table(name = "users")
 public class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_gen")
-    @SequenceGenerator(name = "user_gen", sequenceName = "user_seq", allocationSize = 1)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
-    @Column(nullable = false)
+    @NotNull
+    @Column(name = "name")
     private String name;
-
-//    @Column(nullable = false, unique = true)
-//    private String email;
 
     @Column(name = "username")
     private String username;
 
-    @Column
-    private  String password;
+    @NotNull
+    @Email
+    @Column(name = "email", unique = true)
+    private String email;
 
-//    @Column(name="created_at")
-//    @CreationTimestamp
-//    private Instant createdAt;
-//
-//    @Column(name="updated_at")
-//    @UpdateTimestamp
-//    private Instant updatedAt;
+    @NotNull
+    @Column(name="password")
+    private String password;
+
+    @Column(name="address")
+    private String address;
+
+    @Column(name = "dob",columnDefinition = "date of birth")
+    private LocalDate dob;
+
+    @CreationTimestamp(source = SourceType.DB)
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @CreationTimestamp(source = SourceType.DB)
+    @Column(name = "updated_at", insertable = false)
+    private LocalDateTime updateAt;
 }
