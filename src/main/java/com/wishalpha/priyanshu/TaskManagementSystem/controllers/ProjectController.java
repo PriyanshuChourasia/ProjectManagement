@@ -1,4 +1,4 @@
 package com.wishalpha.priyanshu.TaskManagementSystem.controllers;
 
-public class UserController {
+public class ProjectController {
 }

@@ -1,17 +1,24 @@
 package com.wishalpha.priyanshu.TaskManagementSystem.controllers;
 
-import jakarta.servlet.http.HttpServletRequest;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
-@RequestMapping("/")
+@RequestMapping("")
 public class IndexController {
 
-    @GetMapping("")
-    public String index(HttpServletRequest request)
-    {
-        return "Welcome To Spring Boot java ," + request.getAuthType();
+    @GetMapping
+    public ResponseEntity<Object> index(){
+        Map<String,String> response = new HashMap<>();
+
+        response.put("message","Welcome to Task Management");
+        response.put("status","Success");
+        return ResponseEntity.ok().body(response);
     }
 }
