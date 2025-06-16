@@ -36,6 +36,9 @@ public class Employee {
 
     private String address;
 
+    @Column(name = "profile_picture_url")
+    private String profilePictureURL;
+
     @Column(name = "phone_number")
     private Long phoneNumber;
 
@@ -144,6 +147,12 @@ public class Employee {
         this.updateAt = updateAt;
     }
 
+    public String getProfilePictureURL() {
+        return profilePictureURL;
+    }
 
+    public void setProfilePictureURL(String profilePictureURL) {
+        this.profilePictureURL = profilePictureURL;
+    }
 
 }

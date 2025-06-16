@@ -1,5 +1,6 @@
 package com.wishalpha.priyanshu.TaskManagementSystem.entities;
 
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -17,30 +17,29 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "projects")
-public class Project {
+@Table(name = "project_modules")
+public class Module {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull(message = "Name is required")
+    @NotNull
     private String name;
 
+    @NotNull
     private String description;
 
-    private String version;
+    @Column(name = "project_id")
+    private UUID projectId;
 
-    @Column(name = "start_date")
-    private LocalDateTime startDate;
+    @Column(name = "author_user_id")
+    private UUID authorUserId;
 
-    @Column(name = "end_date")
-    private LocalDateTime endDate;
+    @Column(name = "assigned_team_id")
+    private UUID assignedTeamId;
 
-    @Column(name ="created_by")
-    private UUID createdBy;
-
-    // Here ownership means team leader who is responsible for maintaining project
-    private UUID ownership;
+    @Column(name = "due_date")
+    private LocalDateTime dueDate;
 
     @CreationTimestamp
     @Column(name = "created_at")
@@ -49,5 +48,4 @@ public class Project {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
 }
