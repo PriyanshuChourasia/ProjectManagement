@@ -1,5 +1,6 @@
 package com.wishalpha.priyanshu.TaskManagementSystem.exceptions;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -39,5 +40,18 @@ public class GlobalExceptionHandler {
         res.put("errors",errorMessage);
         res.put("success",false);
         return new ResponseEntity<>(res,HttpStatus.FOUND);
+    }
+
+//    Data integrity violation errors
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> handleDataIntegrityExceptionViolation(DataIntegrityViolationException ex){
+        Map<String, Object> res = new HashMap<>();
+        Map<String, String> errorMessage = new HashMap<>();
+        errorMessage.put("message",ex.getRootCause().getMessage());
+
+        res.put("errors",errorMessage);
+        res.put("success",false);
+        return new ResponseEntity<>(res,HttpStatus.CONFLICT);
     }
 }
