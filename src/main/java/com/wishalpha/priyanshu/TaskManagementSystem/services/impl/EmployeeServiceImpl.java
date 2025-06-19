@@ -9,6 +9,8 @@ import com.wishalpha.priyanshu.TaskManagementSystem.exceptions.DataNotExistsExce
 import com.wishalpha.priyanshu.TaskManagementSystem.mapper.EmployeeMapper;
 import com.wishalpha.priyanshu.TaskManagementSystem.repositories.EmployeeRepository;
 import com.wishalpha.priyanshu.TaskManagementSystem.services.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +18,9 @@ import java.util.UUID;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private final EmployeeRepository employeeRepository;
 
@@ -33,12 +38,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponseDTO create(EmployeeRequestDTO employeeRequestDTO){
         Employee employee = new Employee();
-        if(employeeRepository.existsByEmail(employee.getEmail())){
+        if(employeeRepository.existsByEmail(employeeRequestDTO.getEmail())){
             throw new DataExistsException("Employee exists by this email");
         }
         employee.setName(employeeRequestDTO.getName());
         employee.setEmail(employeeRequestDTO.getEmail());
-        employee.setPassword(employeeRequestDTO.getPassword());
+        employee.setPassword(passwordEncoder.encode(employeeRequestDTO.getPassword()));
         Employee createdUser = employeeRepository.save(employee);
         return EmployeeMapper.toDto(createdUser);
     }
