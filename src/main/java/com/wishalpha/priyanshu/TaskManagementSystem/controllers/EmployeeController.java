@@ -8,7 +8,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -28,9 +30,14 @@ public class EmployeeController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<EmployeeResponseDTO> create(@Valid @RequestBody EmployeeRequestDTO employeeRequestDTO){
+    public ResponseEntity<Object> create(@Valid @RequestBody EmployeeRequestDTO employeeRequestDTO){
         EmployeeResponseDTO employeeResponseDTO = employeeService.create(employeeRequestDTO);
-        return ResponseEntity.ok().body(employeeResponseDTO);
+        Map<String,Object> empRes = new HashMap<>();
+        empRes.put("data",employeeResponseDTO);
+        empRes.put("message","Employee created successfully");
+        empRes.put("success",true);
+
+        return ResponseEntity.ok().body(empRes);
     }
 
     @GetMapping("/{id}")
@@ -38,4 +45,6 @@ public class EmployeeController {
         EmployeeResponseDTO employeeResponseDTO = employeeService.getById(id);
         return ResponseEntity.ok().body(employeeResponseDTO);
     }
+
+
 }

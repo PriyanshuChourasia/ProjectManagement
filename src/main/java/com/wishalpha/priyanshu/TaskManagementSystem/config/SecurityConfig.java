@@ -45,6 +45,7 @@ public class SecurityConfig {
                 authorizeRequests.requestMatchers("/api/h2-console/**").permitAll()
                         .requestMatchers("/auth/signin").permitAll()
                         .requestMatchers("/employee/create").permitAll()
+                        .requestMatchers("/auth/forgot-password").permitAll()
                         .anyRequest().authenticated());
 
         http.cors(cors->cors.configurationSource(corsConfigurationSource()));
