@@ -2,11 +2,16 @@ package com.wishalpha.priyanshu.TaskManagementSystem.controllers;
 
 
 import com.wishalpha.priyanshu.TaskManagementSystem.config.jwt.JwtUtils;
+import com.wishalpha.priyanshu.TaskManagementSystem.dtos.requestDTO.ForgotPasswordDTO;
 import com.wishalpha.priyanshu.TaskManagementSystem.dtos.requestDTO.LoginRequest;
-import com.wishalpha.priyanshu.TaskManagementSystem.dtos.responseDTO.LoginResponse;
+import com.wishalpha.priyanshu.TaskManagementSystem.entities.Employee;
+import com.wishalpha.priyanshu.TaskManagementSystem.exceptions.DataNotExistsException;
+import com.wishalpha.priyanshu.TaskManagementSystem.repositories.EmployeeRepository;
+import com.wishalpha.priyanshu.TaskManagementSystem.services.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/auth")
@@ -33,6 +39,12 @@ public class LoginController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest){
@@ -63,6 +75,42 @@ public class LoginController {
             map.put("status",false);
             return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
         }
+    }
 
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Object> forgotPassword(@RequestBody ForgotPasswordDTO forgotPasswordDTO){
+        try {
+            if (!employeeRepository.existsByEmail(forgotPasswordDTO.getEmail())){
+                Map<String,Object> map = new HashMap<>();
+                Map<String,String> res = new HashMap<>();
+
+                res.put("message","Email doesn't exists");
+                map.put("errors",res);
+                map.put("success",false);
+                return new ResponseEntity<Object>(map,HttpStatus.NOT_FOUND);
+            }
+
+            Employee employee = employeeRepository.findByEmail(forgotPasswordDTO.getEmail());
+            Random random = new Random();
+            int otp = random.nextInt(9000) + 1000;
+            emailService.sendEmail(forgotPasswordDTO.getEmail(),employee.getName(),otp);
+
+            Map<String,Object> res = new HashMap<>();
+            Map<String,String> map = new HashMap<>();
+
+            map.put("message","An Otp has been sent to registered mail");
+            res.put("data",map);
+            res.put("success",true);
+            return new ResponseEntity<Object>(res,HttpStatus.OK);
+        }catch (Exception e){
+            logger.error("Forgot Password Error: {}",e.getMessage());
+            Map<String,Object> map = new HashMap<>();
+            Map<String,String> res = new HashMap<>();
+
+            res.put("message","Data Error");
+            map.put("errors",res);
+            map.put("success",false);
+            return  ResponseEntity.badRequest().body(map);
+        }
     }
 }
