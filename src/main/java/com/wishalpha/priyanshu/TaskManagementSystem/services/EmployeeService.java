@@ -1,6 +1,7 @@
 package com.wishalpha.priyanshu.TaskManagementSystem.services;
 
 import com.wishalpha.priyanshu.TaskManagementSystem.dtos.requestDTO.EmployeeRequestDTO;
+import com.wishalpha.priyanshu.TaskManagementSystem.dtos.requestDTO.EmployeeUpdateRequestDTO;
 import com.wishalpha.priyanshu.TaskManagementSystem.dtos.responseDTO.EmployeeResponseDTO;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface EmployeeService {
     EmployeeResponseDTO create(EmployeeRequestDTO employeeRequestDTO);
 
     EmployeeResponseDTO getById(UUID id);
+
+    EmployeeResponseDTO update(EmployeeUpdateRequestDTO employeeUpdateRequestDTO, UUID id);
 }

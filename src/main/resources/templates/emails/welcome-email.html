@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${subject}">Welcome To WishAlpha</title>
+    <style>
+        .email-wrapper{
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        h1{
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: 800;
+            text-align: center;
+        }
+        h3{
+            text-align: center;
+            color: #ffffff;
+            font-weight: 200;
+            font-size: 14px;
+        }
+        .email-header{
+            padding: 18px;
+            background-color:#fe595f;
+        }
+        .email-footer{
+            background-color: #a3a3a3;
+            padding: 24px;
+            color:#ffffff;
+        }
+        a{
+            color:#000;
+            text-decoration:none;
+        }
+        .logo{
+            font-size: 22px;
+        }
+        .email-body{
+            padding: 18px;
+        }
+        .boldLetter{
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .customer{
+            color: #000;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div class="email-wrapper">
+    <div class="email-header">
+        <div>
+            <h1 class="logo">WA</h1>
+            <hr>
+            <h1>Welcome to WishAlpha</h1>
+            <h3>Thanks for <span class="boldLetter">joining</span> us 🎉</h3>
+        </div>
+    </div>
+
+    <div class="email-body">
+        <h1 class="customer">Hello <span th:text="${name}"></span>, 👋</h1>
+        <p>We’re thrilled to have you on board at <strong>WishAlpha</strong> — your smart assistant for streamlined task management.</p>
+
+        <p>With WishAlpha, you can:</p>
+        <ul>
+            <li>✅ Create, assign, and manage tasks efficiently</li>
+            <li>🕒 Set deadlines and get reminders</li>
+            <li>📊 Track progress and team performance</li>
+            <li>📁 Collaborate seamlessly with your team</li>
+        </ul>
+
+        <p>Get started by logging in to your dashboard and exploring your workspace.</p>
+        <p><a href="https://www.wishalpha.com/login" class="cta-button">Go to Dashboard 🚀</a></p>
+    </div>
+
+    <div class="email-footer">
+        <p>If you have any questions, feel free to reach out at
+            <a href="mailto:wishalphasupport@gmail.com">wishalphasupport@gmail.com</a>.
+        </p>
+        <p>Happy Planning!<br/><strong>— The WishAlpha Team</strong></p>
+    </div>
+</div>
+</body>
+</html>

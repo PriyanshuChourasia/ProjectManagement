@@ -42,6 +42,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(res,HttpStatus.FOUND);
     }
 
+//    Email not send exception
+    @ExceptionHandler(EmailNotSendException.class)
+    public ResponseEntity<Object> handleEmailNotSendException(EmailNotSendException ex){
+        Map<String,Object> res = new HashMap<>();
+        Map<String,String> errorMessage = new HashMap<>();
+        errorMessage.put("message",ex.getMessage());
+        res.put("errors",errorMessage);
+        res.put("success",false);
+        return new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+
+    }
+
 //    Data integrity violation errors
 
     @ExceptionHandler(DataIntegrityViolationException.class)

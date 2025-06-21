@@ -5,13 +5,12 @@ import com.wishalpha.priyanshu.TaskManagementSystem.config.jwt.JwtUtils;
 import com.wishalpha.priyanshu.TaskManagementSystem.dtos.requestDTO.ForgotPasswordDTO;
 import com.wishalpha.priyanshu.TaskManagementSystem.dtos.requestDTO.LoginRequest;
 import com.wishalpha.priyanshu.TaskManagementSystem.entities.Employee;
-import com.wishalpha.priyanshu.TaskManagementSystem.exceptions.DataNotExistsException;
 import com.wishalpha.priyanshu.TaskManagementSystem.repositories.EmployeeRepository;
 import com.wishalpha.priyanshu.TaskManagementSystem.services.EmailService;
+import com.wishalpha.priyanshu.TaskManagementSystem.services.impl.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.thymeleaf.context.Context;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +45,9 @@ public class LoginController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private RedisService redisService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest){
@@ -93,7 +96,14 @@ public class LoginController {
             Employee employee = employeeRepository.findByEmail(forgotPasswordDTO.getEmail());
             Random random = new Random();
             int otp = random.nextInt(9000) + 1000;
-            emailService.sendEmail(forgotPasswordDTO.getEmail(),employee.getName(),otp);
+            redisService.setKeyWithTTl("otp_key",String.valueOf(otp),160);
+            String templatePath = "emails/forgot-password";
+            String subject = "Forgot password";
+            Context  context = new Context();
+            context.setVariable("subject","Forgot Password");
+            context.setVariable("name", employee.getName());
+            context.setVariable("otp",otp);
+            emailService.sendEmail(forgotPasswordDTO.getEmail(),subject,context,templatePath);
 
             Map<String,Object> res = new HashMap<>();
             Map<String,String> map = new HashMap<>();

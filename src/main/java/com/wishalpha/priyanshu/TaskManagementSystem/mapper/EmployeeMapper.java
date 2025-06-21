@@ -1,6 +1,7 @@
 package com.wishalpha.priyanshu.TaskManagementSystem.mapper;
 
 import com.wishalpha.priyanshu.TaskManagementSystem.dtos.requestDTO.EmployeeRequestDTO;
+import com.wishalpha.priyanshu.TaskManagementSystem.dtos.requestDTO.EmployeeUpdateRequestDTO;
 import com.wishalpha.priyanshu.TaskManagementSystem.dtos.responseDTO.EmployeeResponseDTO;
 import com.wishalpha.priyanshu.TaskManagementSystem.entities.Employee;
 
@@ -20,6 +21,12 @@ public class EmployeeMapper {
         employee.setName(employeeRequestDTO.getName());
         employee.setPassword(employeeRequestDTO.getPassword());
         employee.setEmail(employeeRequestDTO.getEmail());
+        return employee;
+    }
+
+    public static Employee toUpdateModel(EmployeeUpdateRequestDTO employeeUpdateRequestDTO){
+        Employee employee = new Employee();
+
         return employee;
     }
 }
