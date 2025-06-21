@@ -23,10 +23,4 @@ public class EmployeeMapper {
         employee.setEmail(employeeRequestDTO.getEmail());
         return employee;
     }
-
-    public static Employee toUpdateModel(EmployeeUpdateRequestDTO employeeUpdateRequestDTO){
-        Employee employee = new Employee();
-
-        return employee;
-    }
 }

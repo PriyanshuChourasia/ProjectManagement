@@ -8,8 +8,16 @@ public class EmployeeResponseDTO {
     private String name;
     private String email;
     private String employeeId;
-
     private String userType;
+    private String profilePictureURL;
+
+    public String getProfilePictureURL() {
+        return profilePictureURL;
+    }
+
+    public void setProfilePictureURL(String profilePictureURL) {
+        this.profilePictureURL = profilePictureURL;
+    }
     public String getId() {
         return id;
     }

@@ -23,6 +23,7 @@ public class UserType {
     private UUID id;
 
     @NotNull
+    @Column(unique = true)
     private String name;
 
     private String alias;
